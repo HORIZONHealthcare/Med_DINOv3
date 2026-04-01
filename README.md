@@ -51,26 +51,6 @@ python -m ipykernel install --user --name medfound --display-name "Python (medfo
 <th valign="bottom">ViT-Large</th>
 <th valign="bottom">Source</th>
 <!-- TABLE BODY -->
-<tr><td align="left">RETFound_mae_natureCFP</td>
-<td align="center"><a href="https://huggingface.co/YukunZhou/RETFound_mae_natureCFP">access</a></td>
-<td align="center"><a href="https://www.nature.com/articles/s41586-023-06555-x">Nature RETFound paper</a></td>
-</tr>
-<!-- TABLE BODY -->
-<tr><td align="left">RETFound_mae_natureOCT</td>
-<td align="center"><a href="https://huggingface.co/YukunZhou/RETFound_mae_natureOCT">access</a></td>
-<td align="center"><a href="https://www.nature.com/articles/s41586-023-06555-x">Nature RETFound paper</a></td>
-</tr>
-<!-- TABLE BODY -->
-<tr><td align="left">RETFound_mae_meh</td>
-<td align="center"><a href="https://huggingface.co/YukunZhou/RETFound_mae_meh">access</a></td>
-<td align="center"><a href="https://www.nature.com/articles/s41467-026-70077-z">FM data paper</a></td>
-</tr>
-<!-- TABLE BODY -->
-<tr><td align="left">RETFound_mae_shanghai</td>
-<td align="center"><a href="https://huggingface.co/YukunZhou/RETFound_mae_shanghai">access</a></td>
-<td align="center"><a href="https://www.nature.com/articles/s41467-026-70077-z">FM data paper</a></td>
-</tr>
-<!-- TABLE BODY -->
 <tr><td align="left">RETFound_dinov2_meh</td>
 <td align="center"><a href="https://huggingface.co/YukunZhou/RETFound_dinov2_meh">access</a></td>
 <td align="center"><a href="https://www.nature.com/articles/s41467-026-70077-z">FM data paper</a></td>
@@ -82,12 +62,12 @@ python -m ipykernel install --user --name medfound --display-name "Python (medfo
 </tr>
 <!-- TABLE BODY -->
 <tr><td align="left">RETFound_dinov3</td>
-<td align="center"><a href="https://huggingface.co/YukunZhou/RETFound_dinov2_shanghai">access</a></td>
+<td align="center"><a href="https://huggingface.co/YukunZhou/retfound_dinov3">access</a></td>
 <td align="center"><a href="https://arxiv.org/abs/2509.03421">Benchmark paper</a></td>
 </tr>
 <!-- TABLE BODY -->
 <tr><td align="left">ChestFound_dinov3</td>
-<td align="center"><a href="https://huggingface.co/YukunZhou/RETFound_dinov2_shanghai">access</a></td>
+<td align="center"><a href="https://huggingface.co/YukunZhou/chestfound_dinov3">access</a></td>
 <td align="center"><a href="https://arxiv.org/abs/2509.03421">Benchmark data paper</a></td>
 </tr>
 </tbody></table>
@@ -200,54 +180,6 @@ torchrun --nproc_per_node=1 --master_port="${MASTER_PORT}" main_finetune.py \
   --task "${TASK}" \
   --adaptation "${ADAPTATION}" \
   --finetune "${FINETUNE}"
-
-```
-
-
-
-6. For evaluation only (download data and model checkpoints [here](BENCHMARK.md); change the DATA_PATH below)
-
-
-```
-# ==== Model settings ====
-# adaptation {finetune,lp}
-ADAPTATION="finetune"
-MODEL="MED_dinov3"
-MODEL_ARCH="MED_dinov3"
-FINETUNE="chestfound_dinov3"
-
-# ==== Data settings ====
-DATASET="tbx11k"
-DATA_PATH="./${DATASET}"
-NB_CLASSES=3
-
-# ==== Evaluation settings ====
-MASTER_PORT=48788
-EPOCHS=50
-BATCH_SIZE=24
-INPUT_SIZE=224
-DATA_RATIO="1.0"
-
-TASK="${MODEL_ARCH}_${DATASET}_${BATCH_SIZE}_${ADAPTATION}_${DATA_RATIO}"
-
-# Path to the trained checkpoint (adjust if you saved elsewhere)
-CKPT="./output_dir/${TASK}/checkpoint-best.pth"
-
-
-torchrun --nproc_per_node=1 --master_port="${MASTER_PORT}" main_finetune.py \
-  --model "${MODEL}" \
-  --model_arch "${MODEL_ARCH}" \
-  --batch_size "${BATCH_SIZE}" \
-  --epochs "${EPOCHS}" \
-  --nb_classes "${NB_CLASSES}" \
-  --data_path "${DATA_PATH}" \
-  --input_size "${INPUT_SIZE}" \
-  --dataratio "${DATA_RATIO}" \
-  --task "${TASK}" \
-  --adaptation "${ADAPTATION}" \
-  --finetune "${FINETUNE}" \
-  --eval \
-  --resume "${CKPT}"
 
 ```
 
